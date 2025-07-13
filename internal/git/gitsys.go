@@ -1,4 +1,4 @@
-package main
+package git
 
 import (
 	"bufio"
@@ -10,7 +10,9 @@ import (
 	"strings"
 )
 
-func main() {
+func GetChanges() ([]string, error) {
+	var changes []string
+
 	if _, err := exec.LookPath("git"); err != nil {
 		fmt.Fprintln(os.Stderr, "git bulunamadı:", err)
 		os.Exit(1)
@@ -44,7 +46,7 @@ func main() {
 		panic(fmt.Errorf("değişen dosyaları listelerken hata: %w", err))
 	}
 	if len(listOut) == 0 {
-		return
+		return nil, nil
 	}
 
 	scanner := bufio.NewScanner(bytes.NewReader(listOut))
@@ -67,6 +69,21 @@ func main() {
 			continue
 		}
 
-		fmt.Printf("=== Diff for %s ===\n%s\n", file, string(diffOut))
+		changes = append(changes, fmt.Sprintf("=== Diff for %s ===\n%s\n", file, string(diffOut)))
 	}
+	return changes, nil
+}
+
+func CommitChanges(message string) error {
+	addCmd := exec.Command("git", "add", ".")
+	if err := addCmd.Run(); err != nil {
+		return fmt.Errorf("git add işlemi sırasında hata: %w", err)
+	}
+	cmd := exec.Command("git", "commit", "-m", message)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	if err := cmd.Run(); err != nil {
+		return fmt.Errorf("commit işlemi sırasında hata: %w", err)
+	}
+	return nil
 }
