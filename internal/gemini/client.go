@@ -7,8 +7,6 @@ import (
 	"io"
 	"net/http"
 	"strings"
-
-	"github.com/knetic0/auto-commit-message-generator/config"
 )
 
 const (
@@ -21,9 +19,9 @@ type GeminiClient struct {
 	ApiKey string
 }
 
-func NewGeminiClient() *GeminiClient {
+func NewGeminiClient(apiKey string) *GeminiClient {
 	return &GeminiClient{
-		ApiKey: config.GEMINI_API_KEY,
+		ApiKey: apiKey,
 	}
 }
 

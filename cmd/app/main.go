@@ -5,18 +5,18 @@ import (
 	"os"
 	"strings"
 
-	"github.com/knetic0/auto-commit-message-generator/config"
 	"github.com/knetic0/auto-commit-message-generator/internal/gemini"
 	"github.com/knetic0/auto-commit-message-generator/internal/git"
 	"golang.org/x/term"
 )
 
 func main() {
-	if err := config.Init(); err != nil {
-		panic(err)
+	apiKey := os.Getenv("GEMINI_API_KEY")
+	if apiKey == "" {
+		panic("GEMINI_API_KEY environment variable is not set")
 	}
 
-	geminiClient := gemini.NewGeminiClient()
+	geminiClient := gemini.NewGeminiClient(apiKey)
 	changes, err := git.GetChanges()
 	if err != nil {
 		panic(err)
