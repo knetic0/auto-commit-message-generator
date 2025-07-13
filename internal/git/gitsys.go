@@ -85,5 +85,5 @@ func CommitChanges(message string) error {
 	if err := cmd.Run(); err != nil {
 		return fmt.Errorf("commit işlemi sırasında hata: %w", err)
 	}
-	return nil // hello
+	return nil
 }
