@@ -37,7 +37,8 @@ func main() {
 	}
 	message := response.Candidates[0].Content.Parts[0].Text
 
-	fmt.Println("Generated commit message:", message)
+	fmt.Println("Generated commit message:")
+	fmt.Println(message)
 	fmt.Println("\nPress ENTER to commit, or ESC to cancel.")
 
 	fd := int(os.Stdin.Fd())
