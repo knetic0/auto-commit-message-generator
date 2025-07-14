@@ -65,7 +65,6 @@ func (c *GeminiClient) GenerateCommitMessage(request *GeminiRequest) (*GeminiRes
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println(string(body))
 
 	var geminiResponse GeminiResponse
 	if err := json.Unmarshal(body, &geminiResponse); err != nil {
